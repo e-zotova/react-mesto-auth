@@ -58,6 +58,14 @@
 @import url(./blocks/places/__delete-button/places__delete-button.css);
 @import url(./blocks/popup/__delete-card-form/popup__delete-card-form.css);
 
-/* imports for footer*/
+/* imports for footer */
 @import url(./blocks/footer/footer.css);
 @import url(./blocks/footer/__copyright/footer__copyright.css);
+
+/* imports for register */
+@import url(./blocks/register/register.css);
+@import url(./blocks/register/__header/register__header.css);
+
+/* imports for login */
+@import url(./blocks/login/login.css);
+@import url(./blocks/login/__header/login__header.css);

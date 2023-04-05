@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
-import PopupWithConfirmation from './PopupWithConfirmation';
+import PopupWithConfirmation from "./PopupWithConfirmation";
 import Footer from "./Footer";
+import Register from "./Register";
+import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -21,6 +25,12 @@ function App() {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [isDeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [loggedIn, setLoggedIn] = useState(true);
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -148,15 +158,31 @@ function App() {
         <div className="page">
           <Header />
 
-          <Main
-            onEditAvatar={setEditAvatarPopupOpen}
-            onEditProfile={setEditProfilePopupOpen}
-            onAddPlace={setAddPlacePopupOpen}
-            cards={cards}
-            onCardClick={{ setSelectedCard, setIsImageOpen }}
-            onCardLike={handleCardLike}
-            onDeleteClick={setDeleteConfirmationOpen}
-          />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                loggedIn ? (
+                  <Main
+                    onEditAvatar={setEditAvatarPopupOpen}
+                    onEditProfile={setEditProfilePopupOpen}
+                    onAddPlace={setAddPlacePopupOpen}
+                    cards={cards}
+                    onCardClick={{ setSelectedCard, setIsImageOpen }}
+                    onCardLike={handleCardLike}
+                    onDeleteClick={setDeleteConfirmationOpen}
+                  />
+                ) : (
+                  <Navigate to="/sign-in" replace />
+                )
+              }
+            />
+            <Route path="/sign-in" element={<Login />} loggedIn={loggedIn} />
+            <Route
+              path="/sign-up"
+              element={<ProtectedRoute element={Register} loggedIn={loggedIn} />}
+            />
+          </Routes>
 
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
