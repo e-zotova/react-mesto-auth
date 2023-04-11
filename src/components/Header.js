@@ -1,7 +1,8 @@
 import React from "react";
 import headerLogo from "../images/header-logo.svg";
+import { Link, Route, Routes } from "react-router-dom";
 
-function Header() {
+function Header({ title, route, onClick }) {
   return (
     <header className="header">
       <img
@@ -9,6 +10,9 @@ function Header() {
         src={headerLogo}
         alt="Логотип Место Россия"
       />
+      <Link to={route} className="header__link" type="button" onClick={onClick}>
+        {title}
+      </Link>
     </header>
   );
 }

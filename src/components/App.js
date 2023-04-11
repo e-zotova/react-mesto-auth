@@ -9,6 +9,7 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import PopupWithConfirmation from "./PopupWithConfirmation";
+import InfoTooltip from "./InfoTooltip";
 import Footer from "./Footer";
 import Register from "./Register";
 import Login from "./Login";
@@ -24,6 +25,8 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [isDeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [loggedIn, setLoggedIn] = useState(true);
@@ -129,6 +132,7 @@ function App() {
     setIsImageOpen(false);
     setDeleteConfirmationOpen(false);
     setSelectedCard({});
+    setInfoTooltipOpen(false);
   }
 
   const isOpen =
@@ -156,32 +160,46 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="main">
         <div className="page">
-          <Header />
+          <Header route={"sign-in"} title={"Выйти"} onClick={"test"} />
 
           <Routes>
             <Route
               path="/"
               element={
+                <ProtectedRoute
+                  element={Main}
+                  onEditAvatar={setEditAvatarPopupOpen}
+                  onEditProfile={setEditProfilePopupOpen}
+                  onAddPlace={setAddPlacePopupOpen}
+                  cards={cards}
+                  onCardClick={{ setSelectedCard, setIsImageOpen }}
+                  onCardLike={handleCardLike}
+                  onDeleteClick={setDeleteConfirmationOpen}
+                  loggedIn={loggedIn}
+                />
+              }
+            />
+            <Route
+              path="/sign-in"
+              element={<Login handleLogin={handleLogin} />}
+              loggedIn={loggedIn}
+            />
+            <Route
+              path="/sign-up"
+              element={<Register handleLogin={handleLogin} />}
+              loggedIn={loggedIn}
+            />
+            <Route
+              path="/"
+              element={
                 loggedIn ? (
-                  <Main
-                    onEditAvatar={setEditAvatarPopupOpen}
-                    onEditProfile={setEditProfilePopupOpen}
-                    onAddPlace={setAddPlacePopupOpen}
-                    cards={cards}
-                    onCardClick={{ setSelectedCard, setIsImageOpen }}
-                    onCardLike={handleCardLike}
-                    onDeleteClick={setDeleteConfirmationOpen}
-                  />
+                  <Navigate to="/" replace />
                 ) : (
                   <Navigate to="/sign-in" replace />
                 )
               }
             />
-            <Route path="/sign-in" element={<Login />} loggedIn={loggedIn} />
-            <Route
-              path="/sign-up"
-              element={<ProtectedRoute element={Register} loggedIn={loggedIn} />}
-            />
+            <Route path="*" element={<h1>NOT FOUND</h1>} />
           </Routes>
 
           <EditAvatarPopup
@@ -217,6 +235,12 @@ function App() {
             onClose={closeAllPopups}
             isLoading={isLoading}
             onCardDelete={handleCardDelete}
+          />
+
+          <InfoTooltip
+            isOpen={isInfoTooltipOpen}
+            loggedIn={loggedIn}
+            onClose={closeAllPopups}
           />
 
           <Footer />
