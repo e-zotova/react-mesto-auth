@@ -20,7 +20,12 @@ function Header({ userData: { email } }) {
       {pathname === "/" && (
         <div className="header__profile">
           <p className="header__link">{email}</p>
-          <Link to="/sign-in" type="button" className="header__signout" onClick={signOut}>
+          <Link
+            to="/sign-in"
+            type="button"
+            className="header__signout"
+            onClick={signOut}
+          >
             Выйти
           </Link>
         </div>

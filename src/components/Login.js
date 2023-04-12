@@ -2,54 +2,51 @@ import * as auth from "../utils/auth";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login({handleLogin}) {
-
+function Login({ handleLogin }) {
   const [formValue, setFormValue] = useState({
-    email: '',
-    password: '',
-  })
-  const [errorMessage, setErrorMessage] = useState('');
+    email: "",
+    password: "",
+  });
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const tokenCheck = () => {
-    const token = localStorage.getItem('jwt');
-    auth.getContent(token)
-      .then(res => {
-        let email = res.data.email;
-        handleLogin({email});
-        navigate("/");
-      })
-  }
+    const token = localStorage.getItem("jwt");
+    auth.getContent(token).then((res) => {
+      let email = res.data.email;
+      handleLogin({ email });
+      navigate("/");
+    });
+  };
 
   useEffect(() => {
     tokenCheck();
-  }, [])
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValue({
       ...formValue,
-      [name]: value
+      [name]: value,
     });
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const { email, password } = formValue;
 
     if (!formValue.password || !formValue.username) {
-      setErrorMessage('Имя пользователя и пароль должны быть заполнены');
+      setErrorMessage("Имя пользователя и пароль должны быть заполнены");
     }
 
-    auth.authorize(email, password)
-      .then(data => {
-        if (data.token) {
-          localStorage.setItem('jwt', data.token);
-          handleLogin({email});
-          navigate("/");
-        }
-      })
-  }
+    auth.authorize(email, password).then((data) => {
+      if (data.token) {
+        localStorage.setItem("jwt", data.token);
+        handleLogin({ email });
+        navigate("/");
+      }
+    });
+  };
   return (
     <div className="login">
       <h2 className="popup__header">Вход</h2>

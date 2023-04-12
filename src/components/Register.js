@@ -2,7 +2,7 @@ import * as auth from "../utils/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Register({setLoggedIn, setInfoTooltipOpen}) {
+function Register({ setLoggedIn, setInfoTooltipOpen }) {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",

@@ -30,12 +30,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({ email: '' })
+  const [userData, setUserData] = useState({ email: "" });
 
   const handleLogin = ({ email }) => {
     setLoggedIn(true);
     setUserData({ email });
-  }
+  };
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -188,7 +188,12 @@ function App() {
             />
             <Route
               path="/sign-up"
-              element={<Register setInfoTooltipOpen={setInfoTooltipOpen} setLoggedIn={setLoggedIn}/>}
+              element={
+                <Register
+                  setInfoTooltipOpen={setInfoTooltipOpen}
+                  setLoggedIn={setLoggedIn}
+                />
+              }
               loggedIn={loggedIn}
             />
             <Route
