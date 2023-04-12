@@ -1,8 +1,15 @@
 import React from "react";
 import headerLogo from "../images/header-logo.svg";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
-function Header({ title, route, onClick }) {
+function Header({ userData: { email } }) {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  function signOut() {
+    localStorage.removeItem("jwt");
+    navigate("/sign-in");
+  }
   return (
     <header className="header">
       <img
@@ -10,9 +17,24 @@ function Header({ title, route, onClick }) {
         src={headerLogo}
         alt="Логотип Место Россия"
       />
-      <Link to={route} className="header__link" type="button" onClick={onClick}>
-        {title}
-      </Link>
+      {pathname === "/" && (
+        <div className="header__profile">
+          <p className="header__link">{email}</p>
+          <Link to="/sign-in" type="button" className="header__signout" onClick={signOut}>
+            Выйти
+          </Link>
+        </div>
+      )}
+      {pathname === "/sign-in" && (
+        <Link to="/sign-up" className="header__link" type="button">
+          Регистрация
+        </Link>
+      )}
+      {pathname === "/sign-up" && (
+        <Link to="/sign-in" className="header__link" type="button">
+          Войти
+        </Link>
+      )}
     </header>
   );
 }

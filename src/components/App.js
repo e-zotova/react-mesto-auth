@@ -29,11 +29,13 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userData, setUserData] = useState({ email: '' })
 
-  const handleLogin = () => {
+  const handleLogin = ({ email }) => {
     setLoggedIn(true);
-  };
+    setUserData({ email });
+  }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -160,7 +162,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="main">
         <div className="page">
-          <Header route={"sign-in"} title={"Выйти"} onClick={"test"} />
+          <Header userData={userData} />
 
           <Routes>
             <Route
@@ -186,7 +188,7 @@ function App() {
             />
             <Route
               path="/sign-up"
-              element={<Register handleLogin={handleLogin} />}
+              element={<Register />}
               loggedIn={loggedIn}
             />
             <Route
