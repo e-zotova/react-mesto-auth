@@ -188,7 +188,7 @@ function App() {
             />
             <Route
               path="/sign-up"
-              element={<Register />}
+              element={<Register setInfoTooltipOpen={setInfoTooltipOpen} setLoggedIn={setLoggedIn}/>}
               loggedIn={loggedIn}
             />
             <Route

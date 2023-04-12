@@ -2,7 +2,7 @@ import * as auth from "../utils/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Register() {
+function Register({setLoggedIn, setInfoTooltipOpen}) {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -26,9 +26,13 @@ function Register() {
     auth
       .register(email, password)
       .then(() => {
+        setLoggedIn(true);
+        setInfoTooltipOpen(true);
         navigate("/sign-in");
       })
       .catch((err) => {
+        setLoggedIn(false);
+        setInfoTooltipOpen(true);
         setErrorMessage(err);
       });
   };
