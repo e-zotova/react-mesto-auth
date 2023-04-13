@@ -34,23 +34,22 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({ email: "" });
 
-  const tokenCheck = () => {
-    const token = localStorage.getItem("jwt");
-    if (token) {
-      auth
-        .getContent(token)
-        .then((res) => {
-          let email = res.data.email;
-          handleLogin({ email });
-          navigate("/");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
   useEffect(() => {
+    const tokenCheck = () => {
+      const token = localStorage.getItem("jwt");
+      if (token) {
+        auth
+          .getContent(token)
+          .then((res) => {
+            let email = res.data.email;
+            handleLogin({ email });
+            navigate("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    };
     tokenCheck();
   }, []);
 
