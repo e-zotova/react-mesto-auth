@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import EditProfilePopup from "./EditProfilePopup";
@@ -14,8 +14,10 @@ import Footer from "./Footer";
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
+import * as auth from "../utils/auth";
 
 function App() {
+  const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState({});
@@ -32,10 +34,52 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({ email: "" });
 
+  const tokenCheck = () => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      auth
+        .getContent(token)
+        .then((res) => {
+          let email = res.data.email;
+          handleLogin({ email });
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
+
   const handleLogin = ({ email }) => {
     setLoggedIn(true);
     setUserData({ email });
   };
+
+  function onLogin(email, password) {
+    auth.authorize(email, password).then((data) => {
+      localStorage.setItem("jwt", data.token);
+      handleLogin({ email });
+      navigate("/");
+    });
+  }
+
+  function onRegister(email, password) {
+    auth
+      .register(email, password)
+      .then(() => {
+        setLoggedIn(true);
+        setInfoTooltipOpen(true);
+        navigate("/sign-in");
+      })
+      .catch((err) => {
+        setLoggedIn(false);
+        setInfoTooltipOpen(true);
+      });
+  }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -183,17 +227,12 @@ function App() {
             />
             <Route
               path="/sign-in"
-              element={<Login handleLogin={handleLogin} />}
+              element={<Login onLogin={onLogin} />}
               loggedIn={loggedIn}
             />
             <Route
               path="/sign-up"
-              element={
-                <Register
-                  setInfoTooltipOpen={setInfoTooltipOpen}
-                  setLoggedIn={setLoggedIn}
-                />
-              }
+              element={<Register onRegister={onRegister} />}
               loggedIn={loggedIn}
             />
             <Route

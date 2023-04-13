@@ -6,10 +6,11 @@ function Header({ userData: { email } }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  function signOut() {
+  function onSignOut() {
     localStorage.removeItem("jwt");
     navigate("/sign-in");
   }
+
   return (
     <header className="header">
       <img
@@ -24,7 +25,7 @@ function Header({ userData: { email } }) {
             to="/sign-in"
             type="button"
             className="header__signout"
-            onClick={signOut}
+            onClick={onSignOut}
           >
             Выйти
           </Link>

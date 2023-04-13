@@ -1,15 +1,12 @@
-import * as auth from "../utils/auth";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-function Register({ setLoggedIn, setInfoTooltipOpen }) {
+function Register({ onRegister }) {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
 
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,28 +16,21 @@ function Register({ setLoggedIn, setInfoTooltipOpen }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     const { email, password } = formValue;
 
-    auth
-      .register(email, password)
-      .then(() => {
-        setLoggedIn(true);
-        setInfoTooltipOpen(true);
-        navigate("/sign-in");
-      })
-      .catch((err) => {
-        setLoggedIn(false);
-        setInfoTooltipOpen(true);
-        setErrorMessage(err);
-      });
+    if (!email || !password) {
+      setErrorMessage("Имя пользователя и пароль должны быть заполнены");
+    } else {
+      onRegister(email, password);
+    }
   };
 
   return (
     <div className="login">
       <h2 className="popup__header">Регистрация</h2>
-      <form className="popup__form" onSubmit={handleSubmit}>
+      <form className="popup__form" onSubmit={onSubmit}>
         <input
           id="email"
           name="email"
