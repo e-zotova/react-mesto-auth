@@ -19,9 +19,10 @@ function Register({ onRegister }) {
   const onSubmit = (e) => {
     e.preventDefault();
     const { email, password } = formValue;
+    const emptyInputError = "Имя пользователя и пароль должны быть заполнены";
 
     if (!email || !password) {
-      setErrorMessage("Имя пользователя и пароль должны быть заполнены");
+      setErrorMessage(emptyInputError);
     } else {
       onRegister(email, password);
     }

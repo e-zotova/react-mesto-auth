@@ -53,17 +53,23 @@ function App() {
     tokenCheck();
   }, []);
 
-  const handleLogin = ({ email }) => {
+  const handleLogin = (email) => {
     setLoggedIn(true);
-    setUserData({ email });
+    setUserData(email);
   };
 
   function onLogin(email, password) {
-    auth.authorize(email, password).then((data) => {
-      localStorage.setItem("jwt", data.token);
-      handleLogin({ email });
-      navigate("/");
-    });
+    auth
+      .authorize(email, password)
+      .then((data) => {
+        localStorage.setItem("jwt", data.token);
+        handleLogin({ email });
+        navigate("/");
+      })
+      .catch(() => {
+        setLoggedIn(false);
+        setInfoTooltipOpen(true);
+      });
   }
 
   function onRegister(email, password) {
@@ -74,7 +80,7 @@ function App() {
         setInfoTooltipOpen(true);
         navigate("/sign-in");
       })
-      .catch((err) => {
+      .catch(() => {
         setLoggedIn(false);
         setInfoTooltipOpen(true);
       });
@@ -160,15 +166,17 @@ function App() {
   }
 
   useEffect(() => {
-    Promise.all([api.getUser(), api.getInitialCards()])
-      .then(([userData, cardsData]) => {
-        setCurrentUser(userData);
-        setCards(cardsData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUser(), api.getInitialCards()])
+        .then(([userData, cardsData]) => {
+          setCurrentUser(userData);
+          setCards(cardsData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   function closeAllPopups() {
     setEditAvatarPopupOpen(false);
@@ -244,7 +252,10 @@ function App() {
                 )
               }
             />
-            <Route path="*" element={<h1>NOT FOUND</h1>} />
+            <Route
+              path="*"
+              element={<Navigate to={loggedIn ? "/" : "sign-in"} />}
+            />
           </Routes>
 
           <EditAvatarPopup

@@ -9,29 +9,23 @@ function Main({
   cards,
   onCardClick,
   onCardLike,
-  onDeleteClick
+  onDeleteClick,
 }) {
   const currentUser = useContext(CurrentUserContext);
 
   return (
     <main className="content">
       <section className="profile">
-        <div className="profile__container">
           <img
             className="profile__avatar"
             src={currentUser.avatar}
             alt="Аватар пользователя"
           />
-          <div className="profile__overlay">
-            <a
-              className="profile__edit-avatar"
-              href="/#"
-              onClick={onEditAvatar}
-            >
-              {" "}
-            </a>
-          </div>
-        </div>
+          <a
+            className="profile__edit-avatar"
+            href="/#"
+            onClick={onEditAvatar}
+          />
         <div className="profile__info">
           <div className="profile__name-edit">
             <h1 className="profile__name">{currentUser.name}</h1>
