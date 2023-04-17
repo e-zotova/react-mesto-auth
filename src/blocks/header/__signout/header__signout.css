@@ -4,3 +4,10 @@
   text-decoration: none;
   align-self: center;
 }
+
+@media screen and (max-width: 630px) {
+  .header__signout {
+    padding-top: 10px;
+    padding-left: 0;
+  }
+}

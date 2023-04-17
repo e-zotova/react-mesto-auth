@@ -4,7 +4,7 @@ import fail from "../images/fail.svg";
 function InfoTooltip({ isOpen, loggedIn, onClose }) {
   return (
     <div className={`popup popup_info-tooltip ${isOpen ? "popup_opened" : ""}`}>
-      <div className="popup__container">
+      <div className="popup__container login__container">
         <img className="login__result" src={loggedIn ? success : fail} alt="Статус регистрации" />
         <div className="login__result_text">
           {loggedIn

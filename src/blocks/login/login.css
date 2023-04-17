@@ -9,3 +9,10 @@
   z-index: 10;
   padding: 36px;
 }
+
+@media screen and (max-width: 630px) {
+  .login {
+    padding: 0;
+    max-width: 260px;
+  }
+}

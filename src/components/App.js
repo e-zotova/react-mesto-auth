@@ -211,96 +211,94 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="main">
-        <div className="page">
-          <Header userData={userData} />
+      <div className="page">
+        <Header userData={userData} />
 
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute
-                  element={Main}
-                  onEditAvatar={setEditAvatarPopupOpen}
-                  onEditProfile={setEditProfilePopupOpen}
-                  onAddPlace={setAddPlacePopupOpen}
-                  cards={cards}
-                  onCardClick={{ setSelectedCard, setIsImageOpen }}
-                  onCardLike={handleCardLike}
-                  onDeleteClick={setDeleteConfirmationOpen}
-                  loggedIn={loggedIn}
-                />
-              }
-            />
-            <Route
-              path="/sign-in"
-              element={<Login onLogin={onLogin} />}
-              loggedIn={loggedIn}
-            />
-            <Route
-              path="/sign-up"
-              element={<Register onRegister={onRegister} />}
-              loggedIn={loggedIn}
-            />
-            <Route
-              path="/"
-              element={
-                loggedIn ? (
-                  <Navigate to="/" replace />
-                ) : (
-                  <Navigate to="/sign-in" replace />
-                )
-              }
-            />
-            <Route
-              path="*"
-              element={<Navigate to={loggedIn ? "/" : "sign-in"} />}
-            />
-          </Routes>
-
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-            isLoading={isLoading}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute
+                element={Main}
+                onEditAvatar={setEditAvatarPopupOpen}
+                onEditProfile={setEditProfilePopupOpen}
+                onAddPlace={setAddPlacePopupOpen}
+                cards={cards}
+                onCardClick={{ setSelectedCard, setIsImageOpen }}
+                onCardLike={handleCardLike}
+                onDeleteClick={setDeleteConfirmationOpen}
+                loggedIn={loggedIn}
+              />
+            }
           />
-
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-            isLoading={isLoading}
-          />
-
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            onAddPlace={handleAddPlaceSubmit}
-            isLoading={isLoading}
-          />
-
-          <ImagePopup
-            card={selectedCard}
-            isOpen={isImageOpen}
-            onClose={closeAllPopups}
-          />
-
-          <PopupWithConfirmation
-            card={selectedCard}
-            isOpen={isDeleteConfirmationOpen}
-            onClose={closeAllPopups}
-            isLoading={isLoading}
-            onCardDelete={handleCardDelete}
-          />
-
-          <InfoTooltip
-            isOpen={isInfoTooltipOpen}
+          <Route
+            path="/sign-in"
+            element={<Login onLogin={onLogin} />}
             loggedIn={loggedIn}
-            onClose={closeAllPopups}
           />
+          <Route
+            path="/sign-up"
+            element={<Register onRegister={onRegister} />}
+            loggedIn={loggedIn}
+          />
+          <Route
+            path="/"
+            element={
+              loggedIn ? (
+                <Navigate to="/" replace />
+              ) : (
+                <Navigate to="/sign-in" replace />
+              )
+            }
+          />
+          <Route
+            path="*"
+            element={<Navigate to={loggedIn ? "/" : "sign-in"} />}
+          />
+        </Routes>
 
-          <Footer />
-        </div>
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+          isLoading={isLoading}
+        />
+
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+          isLoading={isLoading}
+        />
+
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
+          isLoading={isLoading}
+        />
+
+        <ImagePopup
+          card={selectedCard}
+          isOpen={isImageOpen}
+          onClose={closeAllPopups}
+        />
+
+        <PopupWithConfirmation
+          card={selectedCard}
+          isOpen={isDeleteConfirmationOpen}
+          onClose={closeAllPopups}
+          isLoading={isLoading}
+          onCardDelete={handleCardDelete}
+        />
+
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          loggedIn={loggedIn}
+          onClose={closeAllPopups}
+        />
+
+        <Footer />
       </div>
     </CurrentUserContext.Provider>
   );

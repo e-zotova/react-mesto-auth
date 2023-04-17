@@ -28,7 +28,7 @@ function Login({ onLogin }) {
 
   return (
     <div className="login">
-      <h2 className="popup__header">Вход</h2>
+      <h2 className="login__header">Вход</h2>
       <form className={`popup__form`} onSubmit={onSubmit}>
         <input
           id="email"
