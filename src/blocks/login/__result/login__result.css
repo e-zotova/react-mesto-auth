@@ -7,3 +7,8 @@
   margin-right: auto;
 }
 
+@media screen and (max-width: 630px) {
+  .login__result {
+    margin-top: 50px;
+  }
+}
